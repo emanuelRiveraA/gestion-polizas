@@ -1,10 +1,14 @@
 package com.seguros.app.polizas.models.entity;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,6 +33,9 @@ public class Cliente {
 
     private String direccion;
     
+    // Relación uno a muchos con pólizas
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Poliza> polizas;
 
     // getters y setters
   
@@ -79,5 +86,15 @@ public class Cliente {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
+
+	public List<Poliza> getPolizas() {
+		return polizas;
+	}
+
+	public void setPolizas(List<Poliza> polizas) {
+		this.polizas = polizas;
+	}
+	
+	
 
 }
