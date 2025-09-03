@@ -26,14 +26,14 @@ public class PolizaController {
     }
 	
 	 @GetMapping("/polizas")
-	 public ResponseEntity<Iterable<?>> listarClientes(){
+	 public ResponseEntity<Iterable<?>> listarPolizas(){
 	      return ResponseEntity.ok(polizaRepository.findAll());
 	 }
 	
 	 // Obtener todos los ...
-	    @GetMapping("/polizas")
-	    public ResponseEntity<?> listarPolizas(@RequestParam(name = "filtro", required = false) String filtro) {
-	    	return ResponseEntity.ok(polizaRepository.buscarPorFiltro(filtro));
-	    }
+	 @GetMapping("/polizas")
+	 public ResponseEntity<?> listarPolizas(@RequestParam(name = "filtro", required = false) String filtro) {
+	   	return ResponseEntity.ok(polizaRepository.buscarPorFiltro(filtro));
+	 }
 
 }
