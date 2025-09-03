@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.seguros.app.polizas.models.entity.Poliza;
@@ -29,5 +30,10 @@ public class PolizaController {
 	      return ResponseEntity.ok(polizaRepository.findAll());
 	 }
 	
+	 // Obtener todos los ...
+	    @GetMapping("/polizas")
+	    public ResponseEntity<?> listarPolizas(@RequestParam(name = "filtro", required = false) String filtro) {
+	    	return ResponseEntity.ok(polizaRepository.buscarPorFiltro(filtro));
+	    }
 
 }
