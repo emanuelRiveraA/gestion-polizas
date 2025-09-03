@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +34,24 @@ public class ClienteController {
     }
 	
 	   // Editar cliente (solo ADMIN)
-//    @PutMapping("/clientes/{id}")
-//    public ResponseEntity<Cliente> editarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
-//        Cliente actualizado = clienteService.(id, cliente);
-//        return ResponseEntity.ok(actualizado);
-//    }
+    @PutMapping("/clientes/{id}")
+    public ResponseEntity<?> editarCliente(@PathVariable(name = "id") Long id, @RequestBody Cliente cliente) {
+       //se busca en la BD por ID
+    	Optional<Cliente> o = clienteService.clienteById(id);
+    	//se valida que exista el registro
+    	if (o.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+    	//si existe lo obtenemos y lo guardamos en una nueva variable
+    	Cliente clienteDB = o.get();
+    	clienteDB.setNumeroIdentificacion(cliente.getNumeroIdentificacion());
+    	clienteDB.setNombreCompleto(cliente.getNombreCompleto());
+    	clienteDB.setCorreo(cliente.getCorreo());
+    	clienteDB.setTelefono(cliente.getTelefono());
+    	clienteDB.setDireccion(cliente.getDireccion());
+    	//lo persistimos con el metodo save. Nos retonara el objeto actualizado
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(clienteDB));
+    }
 
     // Listar clientes (solo ADMIN)
 //    @GetMapping("/clientes")
