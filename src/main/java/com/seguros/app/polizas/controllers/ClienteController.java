@@ -51,6 +51,19 @@ public class ClienteController {
     public ResponseEntity<?> listarClientes(@RequestParam(name = "filtro", required = false) String filtro) {
     	return ResponseEntity.ok(clienteService.buscarPorFiltro(filtro));
     }
+    
+    @GetMapping("/clientes/{id}")
+    public ResponseEntity<?> clienteById(@PathVariable(name = "id") Long id) {
+    	//llamar al servicio para buscar un cliente por su ID
+    	Optional<Cliente> o = clienteService.clienteById(id);
+    	//si el cliente se encuentra, devuelve una respuesta HTTP 404 (Not Found)
+    	if (o.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+    	//si el cliente existe, devuelve un HTTP 200 (ok) con el cliente en el cuerpo
+        return ResponseEntity.ok().body(o.get());
+    }
+
 
     // Eliminar cliente (solo ADMIN)
     @DeleteMapping("/clientes/{id}")

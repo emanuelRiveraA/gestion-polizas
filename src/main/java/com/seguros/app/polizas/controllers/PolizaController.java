@@ -31,9 +31,9 @@ public class PolizaController {
 	 }
 	
 	 // Obtener todos los ...
-	 @GetMapping("/polizas")
-	 public ResponseEntity<?> listarPolizas(@RequestParam(name = "filtro", required = false) String filtro) {
-	   	return ResponseEntity.ok(polizaRepository.buscarPorFiltro(filtro));
-	 }
+//	 @GetMapping("/polizas")
+//	 public ResponseEntity<?> listarPolizas(@RequestParam(name = "filtro", required = false) String filtro) {
+//	   	return ResponseEntity.ok(polizaRepository.buscarPorFiltro(filtro));
+//	 }
 
 }
