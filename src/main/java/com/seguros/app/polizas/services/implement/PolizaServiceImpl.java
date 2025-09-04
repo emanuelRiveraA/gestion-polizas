@@ -35,7 +35,7 @@ public class PolizaServiceImpl implements PolizaService {
 
 	@Override
 	public Optional<Poliza> polizaById(Long id) {
-		return polizaById(id);
+		return polizaRepository.findById(id);
 	}
 
 	@Override
