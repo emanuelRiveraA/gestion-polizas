@@ -39,7 +39,8 @@ public class Poliza {
 
     // Relación muchos a uno con Cliente
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id", nullable = false)
+//    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "cliente_id")
     @JsonBackReference
     private Cliente cliente;
 
