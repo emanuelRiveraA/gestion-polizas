@@ -1,5 +1,6 @@
 package com.seguros.app.polizas.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.seguros.app.polizas.models.entity.Cliente;
+import com.seguros.app.polizas.models.entity.Poliza;
+import com.seguros.app.polizas.models.repository.PolizaRepository;
 import com.seguros.app.polizas.services.ClienteService;
+import com.seguros.app.polizas.services.PolizaService;
 
 @RestController
 @RequestMapping("/api")
@@ -26,6 +30,9 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private PolizaService polizaService;
 	
 	@PostMapping("/clientes")
     public ResponseEntity<?> registrarCliente(@RequestBody Cliente cliente) {
@@ -76,6 +83,33 @@ public class ClienteController {
 		}
     	//si el cliente existe, devuelve un HTTP 200 (ok) con el cliente en el cuerpo
         return ResponseEntity.ok().body(o.get());
+    }
+    
+    @PutMapping("/clientes/{clientId}/asignar-poliza/{polizaId}")
+    public ResponseEntity<?> asignarPoliza(@PathVariable(name = "clientId") Long clientId, @PathVariable(name = "polizaId") Long polizaId){
+    	Optional<Cliente> cliente = clienteService.clienteById(clientId);
+    	if (cliente.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+    	Optional<Poliza> poliza = polizaService.polizaById(polizaId);
+    	if (poliza.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+        // Asociar la póliza al cliente
+        poliza.get().setCliente(cliente.get());        
+
+        // Agregar la póliza a la lista de pólizas del cliente
+        if (cliente.get().getPolizas() == null) {
+            cliente.get().setPolizas(new ArrayList<>());
+        }
+        if (!cliente.get().getPolizas().contains(poliza.get())) {
+            cliente.get().getPolizas().add(poliza.get());
+        }
+        
+        // Guardar la póliza para actualizar la relación
+        polizaService.save(poliza.get());
+    
+    	return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.save(cliente.get()));
     }
 
 

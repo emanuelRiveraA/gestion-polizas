@@ -39,7 +39,7 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Poliza> polizas;
-
+    
     // getters y setters
   
 	public Long getId() {
@@ -98,6 +98,4 @@ public class Cliente {
 		this.polizas = polizas;
 	}
 	
-	
-
 }
